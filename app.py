@@ -1,10 +1,20 @@
 from fastapi import FastAPI, UploadFile, File
+from fastapi.middleware.cors import CORSMiddleware   # ✅ ADD THIS
 from ultralytics import YOLO
 import shutil, uuid, os
 
 app = FastAPI()
 
-# ✅ Use pretrained model
+# ✅ ADD THIS BLOCK HERE (JUST BELOW app = FastAPI())
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # or your Vercel URL later
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Load model
 model = YOLO("yolov8n.pt")
 
 @app.get("/")
